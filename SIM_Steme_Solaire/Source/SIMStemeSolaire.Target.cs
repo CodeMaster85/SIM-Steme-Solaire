@@ -3,13 +3,13 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class SIM_Steme_SolaireTarget : TargetRules
+public class SIMStemeSolaireTarget : TargetRules
 {
-	public SIM_Steme_SolaireTarget(TargetInfo Target) : base(Target)
+	public SIMStemeSolaireTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V4;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_3;
-		ExtraModuleNames.Add("SIM_Steme_Solaire");
+		ExtraModuleNames.Add("SIMStemeSolaire");
 	}
 }

@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class SIM_Steme_Solaire : ModuleRules
+public class SIMStemeSolaire : ModuleRules
 {
-	public SIM_Steme_Solaire(ReadOnlyTargetRules Target) : base(Target)
+	public SIMStemeSolaire(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	

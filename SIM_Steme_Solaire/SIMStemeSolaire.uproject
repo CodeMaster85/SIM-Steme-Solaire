@@ -5,11 +5,11 @@
 	"Description": "",
 	"Modules": [
 		{
-			"Name": "SIM_Steme_Solaire",
+			"Name": "SIMStemeSolaire",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
-				"Engine"
+				"UMG"
 			]
 		}
 	],
