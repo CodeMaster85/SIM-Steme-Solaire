@@ -24,9 +24,13 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 		class UButton* boutonAide;
 
+	UPROPERTY(meta = (BindWidget))
+	class UButton* boutonFonctionAutre;
+
 	void NativeConstruct() override; //override du constructeur pour initialiser les boutons
-	void EvenementBoutonFichier();
+	//void EvenementBoutonFichier();
 	void EvenementBoutonParametres();
 	void EvenementBoutonAide();
+	void EvenementBoutonFonctionAutre();
 
 };
