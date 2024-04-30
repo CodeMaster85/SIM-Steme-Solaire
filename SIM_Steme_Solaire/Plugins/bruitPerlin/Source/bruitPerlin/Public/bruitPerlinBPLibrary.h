@@ -29,4 +29,7 @@ class UbruitPerlinBPLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Execute Sample function", Keywords = "bruitPerlin sample test testing"), Category = "bruitPerlinTesting")
 	static float bruitPerlinSampleFunction(float Param);
+	
+	UFUNCTION(BlueprintCallable)
+	static float bruitPerlin(int32 graine);
 };

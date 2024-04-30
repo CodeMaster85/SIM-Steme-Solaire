@@ -14,3 +14,7 @@ float UbruitPerlinBPLibrary::bruitPerlinSampleFunction(float Param)
 	return -1;
 }
 
+float UbruitPerlinBPLibrary::bruitPerlin(int32 graine)
+{
+	return 1;
+}
