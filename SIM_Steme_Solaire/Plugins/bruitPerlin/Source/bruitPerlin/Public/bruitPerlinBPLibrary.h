@@ -43,9 +43,5 @@ class UbruitPerlinBPLibrary : public UBlueprintFunctionLibrary
 	static int generationGraine(int graine);
 
 	UFUNCTION(blueprintCallable)
-	static int valeurAleatoire(int max);
- 
-public :
-	UPROPERTY(BlueprintReadWrite)
-	static int m_dernierChiffre;
+	static int valeurAleatoire(int max,int m_dernierChiffre);
 };

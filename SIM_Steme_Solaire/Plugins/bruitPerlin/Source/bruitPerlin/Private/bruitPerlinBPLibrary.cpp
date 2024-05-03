@@ -85,6 +85,7 @@ float UbruitPerlinBPLibrary::perlin(float x, float y) {
 
 int UbruitPerlinBPLibrary::generationGraine(int graine)
 {
+    int m_dernierChiffre;
     if (graine != 0)
     {
         m_dernierChiffre = graine;
@@ -96,7 +97,7 @@ int UbruitPerlinBPLibrary::generationGraine(int graine)
     }
     return m_dernierChiffre;
 }
-int UbruitPerlinBPLibrary::valeurAleatoire(int max)
+int UbruitPerlinBPLibrary::valeurAleatoire(int max,int m_dernierChiffre)
 {
     m_dernierChiffre *= 2;
     m_dernierChiffre %= max;
