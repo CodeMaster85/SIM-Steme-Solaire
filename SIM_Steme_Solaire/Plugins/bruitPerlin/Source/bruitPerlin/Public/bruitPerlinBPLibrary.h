@@ -31,5 +31,21 @@ class UbruitPerlinBPLibrary : public UBlueprintFunctionLibrary
 	static float bruitPerlinSampleFunction(float Param);
 	
 	UFUNCTION(BlueprintCallable)
-	static float bruitPerlin(int32 graine);
+	static float bruitPerlin(int32 graine, float x, float y);
+
+	static float linearisation(float poid);
+	static float interpolation(float a0, float a1, float poid);
+	static float produitScalaire(int ix, int iy, float x, float y);
+	static float perlin(float x, float y);
+	static void initialisationDesGradients();
+
+	UFUNCTION(blueprintCallable)
+	static int generationGraine(int graine);
+
+	UFUNCTION(blueprintCallable)
+	static int valeurAleatoire(int max);
+ 
+public :
+	UPROPERTY(BlueprintReadWrite)
+	static int m_dernierChiffre;
 };
