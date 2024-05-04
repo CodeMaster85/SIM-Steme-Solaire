@@ -43,5 +43,8 @@ class UbruitPerlinBPLibrary : public UBlueprintFunctionLibrary
 	static int generationGraine(int graine);
 
 	UFUNCTION(blueprintCallable)
-	static int valeurAleatoire(int max,int m_dernierChiffre);
+	static int valeurAleatoire(int max,int min,int m_dernierChiffre, int m_chiffreSuivant);
+
+	UFUNCTION(blueprintCallable)
+	static int PRNGFibonacci(int graine, int iterations);
 };

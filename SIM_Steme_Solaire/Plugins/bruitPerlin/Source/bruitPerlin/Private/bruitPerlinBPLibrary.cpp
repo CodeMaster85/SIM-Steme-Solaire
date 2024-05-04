@@ -85,21 +85,35 @@ float UbruitPerlinBPLibrary::perlin(float x, float y) {
 
 int UbruitPerlinBPLibrary::generationGraine(int graine)
 {
-    int m_dernierChiffre;
+    srand(time(NULL));
     if (graine != 0)
     {
-        m_dernierChiffre = graine;
+        return graine;
     }
     else
     {
-        int graine = time(NULL);//récupère le temps comme graine initial
-        m_dernierChiffre = graine;
+        return graine = rand();//récupère le temps comme graine initial
     }
+    return graine;
+}
+int UbruitPerlinBPLibrary::valeurAleatoire(int max,int min,int m_dernierChiffre,int m_chiffreSuivant)
+{
+    m_dernierChiffre += m_chiffreSuivant;
+    m_dernierChiffre %= max;
+    m_dernierChiffre += min;
     return m_dernierChiffre;
 }
-int UbruitPerlinBPLibrary::valeurAleatoire(int max,int m_dernierChiffre)
+
+int UbruitPerlinBPLibrary::PRNGFibonacci(int graine,int iterations)
 {
-    m_dernierChiffre *= 2;
-    m_dernierChiffre %= max;
-    return m_dernierChiffre;
+    if (iterations == 0) {
+        return graine;
+    }
+    else if (iterations == 1)
+    {
+        return graine + 1;
+    }
+    else {
+        return (PRNGFibonacci(graine, iterations - 1) + PRNGFibonacci(graine, iterations - 2))%100000;
+    }
 }
