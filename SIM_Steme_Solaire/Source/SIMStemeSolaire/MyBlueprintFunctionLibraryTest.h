@@ -17,11 +17,16 @@ public:
     //UPlanetaryOrbitCalculator();
 
     UFUNCTION(BlueprintCallable)
-    static FVector GetInitialeVelocite(const TArray<int32>& Time, const FString& NomPlanete);
+    static FVector GetInitialeVelocite(const TArray<int32>& Time, int32 indice);
 
     UFUNCTION(BlueprintCallable)
     static FVector GetInitialPosition(const TArray<int32>& Time, int32 index);
     
+    UFUNCTION(BlueprintCallable)
+    static FString GetName(int32 index);
+
+    UFUNCTION(BlueprintCallable)
+    static float GetMass(int32 index);
 
 private:
     // Fonction
@@ -34,4 +39,5 @@ private:
     static const TArray<TArray<TArray<float>>> ELEMENTS;
     // Termes supplémentaires pour certaines planètes
     static const TArray<TArray<float>> EXTRA_TERME;
+    static const TArray<float> Masse;
 };

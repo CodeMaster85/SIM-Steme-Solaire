@@ -1,13 +1,22 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "MyBlueprintFunctionLibraryTest.h"
 #include <iostream>
 #include <iomanip>
-//UPlanetaryOrbitCalculator::UPlanetaryOrbitCalculator()
-//{
-//}
-// constante
+#include "Engine/Engine.h"
+/*
+Yohan Chuet 
+Coder entre le 1 mars et le 14 mai 
+Calcul la position/Velocite initiale des planetes du systeme solaire 
+Est un code utiliser dans Unreal Engin 5
+Le code est seulement utiliser en fonction, c'est a dire que on ne peu pas créer d'instance de cette fonction
+
+Les données ont été trouver en ligne sur : ssd.jpl.nasa.gov/planets/approx_pos.html et nssdc.gsfc.nasa.gov/planetary/factsheet/
+La masse des planète est masse(10^24)kg
+
+Le temps est calculer en Julian Date puisque c'est celui-ci qui est utiliser dans les fonctions de Kepler
+Le jour julien est un système de datation consistant à compter le nombre de jours et fraction de jour écoulés
+depuis une date conventionnelle fixée au 1er janvier de l'an 4713 av. J.-C 
+Source Wikipedia : fr.wikipedia.org/wiki/Jour_julien
+*/
 const TArray<FString> UMyBlueprintFunctionLibraryTest::NOM_PLANETE = {
     "Mercure", "Venus", "Terre", "Mars", "Jupiter", "Saturne", "Uranus", "Neptune"
 };
@@ -36,25 +45,26 @@ const TArray<TArray<TArray<float>>> UMyBlueprintFunctionLibraryTest::ELEMENTS = 
     // Neptune
     {{30.06992276, 0.00859048, 1.77004347, -55.12002969, 44.96476227, 131.78422574},
     {0.00026291, 0.00005105, 0.00035372, 218.45945325, -0.32241464, -0.00508664}},
-    // Pluto
-    {{39.48211675, 0.24882730, 17.14001206, 238.92903833, 224.06891629, 110.30393684},
-    {-0.00031596, 0.00005170, 0.00004818, 145.20780515, -0.04062942, -0.01183482}}
 };
 const TArray<TArray<float>> UMyBlueprintFunctionLibraryTest::EXTRA_TERME = {
     {-0.00012452, 0.06064060, -0.35635438, 38.35125}, // Jupiter
     {0.00025899, -0.13434469, 0.87320147, 38.35125},  // Saturn
     {0.00058331, -0.97731848, 0.17689245, 7.67025},   // Uranus
     {-0.00041348, 0.68346318, -0.10162547, 7.67025},  // Neptune
-    {-0.01262724, 0.0, 0.0, 0.0}                      // Pluto
+};
+const TArray<float> UMyBlueprintFunctionLibraryTest::Masse = {
+    0.330f, 4.87f, 5.97f, 0.643f, 1898.0f, 568.0f, 86.8f, 102.0f
 };
 
 
 FVector UMyBlueprintFunctionLibraryTest::GetInitialeVelocite(const TArray<int32>& Time, int32 index)
 {
-
-    FVector GetInitialPosition = GetInitialPosition(Time, index);
-    FVector Position2 = GetInitialPosition(Time, index[1] + 1);
-
+    FVector positionInitial = GetInitialPosition(Time, index);
+    TArray<int32> Time2 = Time;
+    // ajouter 1 jour pour pouvoir calculer la direction et la vitesse de la planete 
+    Time2[3]++;
+    FVector position2 = GetInitialPosition(Time2, index);
+    UE_LOG(LogTemp, Warning, TEXT("Pos 1 : %s, Pos 2: %s"), *positionInitial.ToString(), *position2.ToString()); // erreur position mauvaise
     FVector vecteurDirection;
     float magnitude = 0.0f;
     float temps = 60.0f;
@@ -78,7 +88,7 @@ FVector UMyBlueprintFunctionLibraryTest::GetInitialeVelocite(const TArray<int32>
     for (int32 i = 0; i < 3; ++i) {
         velocite[i] = vitesse_scalaire * vecteurDirection[i];
     }
-    double JulianDate2 = GetJulianDate(Time[0], Time[1] + 1, Time[2], Time[3], Time[4], Time[5]);
+    UE_LOG(LogTemp, Warning, TEXT("velocite : %s, "), *velocite.ToString()); // erreur position mauvaise
 
     return velocite;
 }
@@ -95,16 +105,39 @@ FVector UMyBlueprintFunctionLibraryTest::GetInitialPosition(const TArray<int32>&
     if (indice > 3 && indice < NOM_PLANETE.Num()) {
         extraTerme = EXTRA_TERME[indice];
     }
-    // Trouver la date Julian qui est necessaire pour les lois de kepler
-    // On ajoute une minute afin d'avoir la position de la planète 1 minutes plus tard
-    // On fait ca pour pouvoir calculer le vecteur et ainsi la velocite 
-    double JulianDate = GetJulianDate(Time[0], Time[1], Time[2], Time[3], Time[4], Time[5]);
 
-    return  ComputePlanetePosition(JulianDate, elements, rates, extraTerme);
+    double JulianDate = GetJulianDate(Time[0], Time[1], Time[2], Time[3], Time[4], Time[5]);
+    return  1000 * ComputePlanetePosition(JulianDate, elements, rates, extraTerme);
 }
+FString UMyBlueprintFunctionLibraryTest::GetName(int32 index)
+{
+    if (index >= 0 && index < NOM_PLANETE.Num())
+    {
+        return NOM_PLANETE[index];
+    }
+    else{
+        UE_LOG(LogTemp, Warning, TEXT("GetName - index out of range"));
+        return "Error";
+    }
+}
+float UMyBlueprintFunctionLibraryTest::GetMass(int32 index)
+{
+    if (index >= 0 && index < NOM_PLANETE.Num())
+    {
+        return Masse[index];
+    }
+    else {
+        UE_LOG(LogTemp, Warning, TEXT("GetMass - index out of range"));
+        return -1;
+    }
+}
+
 
 FVector UMyBlueprintFunctionLibraryTest::ComputePlanetePosition(double jd, TArray<float>& elements, TArray<float>& rates, TArray<float>& extraTerms)
 {
+    // Cette fonction calcul la distance entre les planetes et le soleil 
+    // Les unité de cette distance sont des UA qui correspond 1 UA = 149,6 millions de km 
+    // Cette mesure est souvent utiliser dans les calculs du systeme solaire car c la distance moyenne entre le soleil et la terre 
     const float toRad = PI / 180;
     // Step 1 
     const float T = (jd - 2451545.0) / 36525;
@@ -165,7 +198,7 @@ FVector UMyBlueprintFunctionLibraryTest::ComputePlanetePosition(double jd, TArra
     pos[0] = x;
     pos[1] = y;
     pos[2] = z;
-    return velocite;
+    return pos;
 }
 float UMyBlueprintFunctionLibraryTest::CalculKepler(float M, float e, float E)
 {
