@@ -92,16 +92,9 @@ int UbruitPerlinBPLibrary::generationGraine(int graine)
     }
     else
     {
-        return graine = rand();//récupère le temps comme graine initial
+        return graine = rand();//créer comme graine initial
     }
     return graine;
-}
-int UbruitPerlinBPLibrary::valeurAleatoire(int max,int min,int m_dernierChiffre,int m_chiffreSuivant)
-{
-    m_dernierChiffre += m_chiffreSuivant;
-    m_dernierChiffre %= max;
-    m_dernierChiffre += min;
-    return m_dernierChiffre;
 }
 
 int UbruitPerlinBPLibrary::PRNGFibonacci(int graine,int iterations)
