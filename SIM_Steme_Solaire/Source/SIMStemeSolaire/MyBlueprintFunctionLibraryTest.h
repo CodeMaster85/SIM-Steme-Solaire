@@ -3,6 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include <iostream>
+#include <iomanip>
+#include "Engine/Engine.h"
+#include "Containers/Array.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "MyBlueprintFunctionLibraryTest.generated.h"
 
@@ -28,6 +32,9 @@ public:
     UFUNCTION(BlueprintCallable)
     static float GetMass(int32 index);
 
+    UFUNCTION(BlueprintCallable)
+    static float GetSize(int32 index);
+
 private:
     // Fonction
     static FVector ComputePlanetePosition(double jd, TArray<float>& elements, TArray<float>& rates, TArray<float>& extraTerms);
@@ -39,5 +46,7 @@ private:
     static const TArray<TArray<TArray<float>>> ELEMENTS;
     // Termes supplémentaires pour certaines planètes
     static const TArray<TArray<float>> EXTRA_TERME;
-    static const TArray<float> Masse;
+    static const TArray<float> MASSE;
+    static const TArray <float> TAILLE_PLANETE;
+    static const int32 FACTEUR_DISTANCE;
 };
